@@ -12,7 +12,7 @@
 
 ### Modify(Ordered in comments):
 
-1. /lib/nets/vgg16.py</br>
+1. CSI4106_Faster_RCNN/lib/nets/vgg16.py</br>
 2. CSI4106_Faster_RCNN//train.py</br>
 3. CSI4106_Faster_RCNN//lib/nets/network.py </br>
 4. CSI4106_Faster_RCNN//lib/layer_utils/proposal_layer.py </br>
