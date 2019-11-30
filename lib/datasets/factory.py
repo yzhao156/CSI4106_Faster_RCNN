@@ -15,6 +15,11 @@ from lib.datasets.pascal_voc import pascal_voc
 from lib.datasets.coco import coco
 
 import numpy as np
+'''
+4106
+In this factory file, we can use different test easily. 
+Though different training set have different lables, training set, and year, it split different training set differently.
+'''
 
 # Set up voc_<year>_<split>
 for year in ['2007', '2012']:
@@ -39,7 +44,7 @@ def get_imdb(name):
   """Get an imdb (image database) by name."""
   if name not in __sets:
     raise KeyError('Unknown dataset: {}'.format(name))
-  return __sets[name]()
+  return __sets[name]() # run from lin 13
 
 
 def list_imdbs():

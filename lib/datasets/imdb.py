@@ -22,15 +22,20 @@ class imdb(object):
     """Image database."""
 
     def __init__(self, name, classes=None):
-        self._name = name
+        self._name = name 
+        #4106 give a train name ex.voc_2007_trainval
         self._num_classes = 0
+        #4106 how many class to classify in the network
         if not classes:
             self._classes = []
+            #4106 empty when init, will be added
         else:
             self._classes = classes
-        self._image_index = []
+        self._image_index = [] 
+        #4106 empty when init, will be added
         self._obj_proposer = 'gt'
         self._roidb = None
+        #4106 roidb the finnal result we are trying to get, give it as None for now
         self._roidb_handler = self.default_roidb
         # Use this dict for storing dataset specific config options
         self.config = {}
@@ -108,19 +113,29 @@ class imdb(object):
                 for i in range(self.num_images)]
 
     def append_flipped_images(self):
-        num_images = self.num_images
+        num_images = self.num_images #4106 5011 in voc2007
         widths = self._get_widths()
-        for i in range(num_images):
+        '''
+        4106
+        when doing horizontally-flipped training examples, we also to flip ground truth (x1 y1 x2 y2)
+
+        '''
+        for i in range(num_images): #4106 for each image
             boxes = self.roidb[i]['boxes'].copy()
             oldx1 = boxes[:, 0].copy()
             oldx2 = boxes[:, 2].copy()
             boxes[:, 0] = widths[i] - oldx2 - 1
             boxes[:, 2] = widths[i] - oldx1 - 1
             assert (boxes[:, 2] >= boxes[:, 0]).all()
+            #4106 find the boxes after horizontally flip by using width of the image minus the old x1 and x2.
+            #assert right must bigger than left
             entry = {'boxes': boxes,
                      'gt_overlaps': self.roidb[i]['gt_overlaps'],
                      'gt_classes': self.roidb[i]['gt_classes'],
                      'flipped': True}
+            #4106 already added roidb (5011 for voc 2007)
+            #4106 now add flipped image data (10022 for voc2007)
+            #4106 double the _image_index
             self.roidb.append(entry)
         self._image_index = self._image_index * 2
 

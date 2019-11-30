@@ -22,7 +22,9 @@ from lib.layer_utils.snippets import generate_anchors_pre
 
 class Network(object):
     def __init__(self, batch_size=1):
-        self._feat_stride = [16, ]
+        self._feat_stride = [16, ] 
+        # For region proposal network. 
+        # After use a vgg network, a pixel in the graph corresponding to a 16x16 domain in the graph(anchor).
         self._feat_compress = [1. / 16., ]
         self._batch_size = batch_size
         self._predictions = {}
@@ -148,6 +150,7 @@ class Network(object):
             rpn_labels = tf.to_int32(rpn_labels, name="to_int32")
             self._anchor_targets['rpn_labels'] = rpn_labels
             self._anchor_targets['rpn_bbox_targets'] = rpn_bbox_targets
+            #4106 now all inside and outside are 1, wouldn't change the result
             self._anchor_targets['rpn_bbox_inside_weights'] = rpn_bbox_inside_weights
             self._anchor_targets['rpn_bbox_outside_weights'] = rpn_bbox_outside_weights
 
@@ -158,7 +161,7 @@ class Network(object):
     def _proposal_target_layer(self, rois, roi_scores, name):
         with tf.variable_scope(name):
             rois, roi_scores, labels, bbox_targets, bbox_inside_weights, bbox_outside_weights = tf.py_func(
-                proposal_target_layer,
+                proposal_target_layer, #4106 for an object, find what is its ground truth(TAGING)
                 [rois, roi_scores, self._gt_boxes, self._num_classes],
                 [tf.float32, tf.float32, tf.float32, tf.float32, tf.float32, tf.float32])
 
@@ -184,7 +187,7 @@ class Network(object):
             # just to get the shape right
             height = tf.to_int32(tf.ceil(self._im_info[0, 0] / np.float32(self._feat_stride[0])))
             width = tf.to_int32(tf.ceil(self._im_info[0, 1] / np.float32(self._feat_stride[0])))
-            anchors, anchor_length = tf.py_func(generate_anchors_pre,
+            anchors, anchor_length = tf.py_func(generate_anchors_pre, #4106 generate anchors from different scales then return the number of anchors in variable 'length'
                                                 [height, width,
                                                  self._feat_stride, self._anchor_scales, self._anchor_ratios],
                                                 [tf.float32, tf.int32], name="generate_anchors")
@@ -211,8 +214,17 @@ class Network(object):
         return loss_box
 
     def _add_losses(self, sigma_rpn=3.0):
+        '''
+        4106
+        loss1: RPN's binary classification (it's an object or background)
+        loss2: RPN's loss of regression (bbox)
+        loss3: fully connected network's softmax (20 classification)
+        loss4: fully connected network's regression (bbox)
+        Here we put the 4 loss.
+        '''
         with tf.variable_scope('loss_' + self._tag):
             # RPN, class loss
+            #4106 loss1
             rpn_cls_score = tf.reshape(self._predictions['rpn_cls_score_reshape'], [-1, 2])
             rpn_label = tf.reshape(self._anchor_targets['rpn_labels'], [-1])
             rpn_select = tf.where(tf.not_equal(rpn_label, -1))
@@ -222,6 +234,7 @@ class Network(object):
                 tf.nn.sparse_softmax_cross_entropy_with_logits(logits=rpn_cls_score, labels=rpn_label))
 
             # RPN, bbox loss
+            #4106 loss2
             rpn_bbox_pred = self._predictions['rpn_bbox_pred']
             rpn_bbox_targets = self._anchor_targets['rpn_bbox_targets']
             rpn_bbox_inside_weights = self._anchor_targets['rpn_bbox_inside_weights']
@@ -273,6 +286,7 @@ class Network(object):
         self._num_ratios = len(anchor_ratios)
 
         self._num_anchors = self._num_scales * self._num_ratios
+        #4106 3x3=9
 
         training = mode == 'TRAIN'
         testing = mode == 'TEST'
@@ -283,15 +297,18 @@ class Network(object):
         weights_regularizer = tf.contrib.layers.l2_regularizer(cfg.FLAGS.weight_decay)
         if cfg.FLAGS.bias_decay:
             biases_regularizer = weights_regularizer
+            #4106 Weight regularization
         else:
             biases_regularizer = tf.no_regularizer
+            
 
         # list as many types of layers as possible, even if they are not used now
         with arg_scope([slim.conv2d, slim.conv2d_in_plane,
-                        slim.conv2d_transpose, slim.separable_conv2d, slim.fully_connected],
+                         slim.conv2d_transpose, slim.separable_conv2d, slim.fully_connected],
                        weights_regularizer=weights_regularizer,
                        biases_regularizer=biases_regularizer,
                        biases_initializer=tf.constant_initializer(0.0)):
+            #4106 build network
             rois, cls_prob, bbox_pred = self.build_network(sess, training)
 
         layers_to_output = {'rois': rois}
@@ -306,6 +323,7 @@ class Network(object):
             self._predictions["bbox_pred"] *= stds
             self._predictions["bbox_pred"] += means
         else:
+            #4106 4 loss 
             self._add_losses()
             layers_to_output.update(self._losses)
 

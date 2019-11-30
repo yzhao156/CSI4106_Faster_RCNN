@@ -21,10 +21,10 @@ def prepare_roidb(imdb):
   recorded.
   """
   roidb = imdb.roidb
-  if not (imdb.name.startswith('coco')):
+  if not (imdb.name.startswith('coco')): #4106 get image from index
     sizes = [PIL.Image.open(imdb.image_path_at(i)).size
          for i in range(imdb.num_images)]
-  for i in range(len(imdb.image_index)):
+  for i in range(len(imdb.image_index)): #4106 for each image get position,overlaps,classes...
     roidb[i]['image'] = imdb.image_path_at(i)
     if not (imdb.name.startswith('coco')):
       roidb[i]['width'] = sizes[i][0]

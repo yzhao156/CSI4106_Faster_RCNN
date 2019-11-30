@@ -33,6 +33,7 @@ def bbox_transform(ex_rois, gt_rois):
 
 
 def bbox_transform_inv(boxes, deltas):
+    #4106 find dx dy for loss function
     if boxes.shape[0] == 0:
         return np.zeros((0, deltas.shape[1]), dtype=deltas.dtype)
 
@@ -68,6 +69,7 @@ def bbox_transform_inv(boxes, deltas):
 def clip_boxes(boxes, im_shape):
     """
     Clip boxes to image boundaries.
+    #4106 clip_boxes to check if the box is out of the image.
     """
 
     # x1 >= 0

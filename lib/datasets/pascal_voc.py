@@ -24,19 +24,32 @@ from .voc_eval import voc_eval
 
 class pascal_voc(imdb):
     def __init__(self, image_set, year, devkit_path=None):
-        imdb.__init__(self, 'voc_' + year + '_' + image_set)
+        imdb.__init__(self, 'voc_' + year + '_' + image_set) 
+        #4106 init imdb
         self._year = year
+        #4106 2007 in our first run
         self._image_set = image_set
+        #4106 the location of labels
+        #4106 .txt files with numbers. Shows what are the files we need and the name of the image and labels in xml files.
         self._devkit_path = self._get_default_path() if devkit_path is None \
             else devkit_path
         self._data_path = os.path.join(self._devkit_path, 'VOC' + self._year)
+        #4106 generate the location of the the file VOC2007
         self._classes = ('__background__',  # always index 0
                          'aeroplane', 'bicycle', 'bird', 'boat',
                          'bottle', 'bus', 'car', 'cat', 'chair',
                          'cow', 'diningtable', 'dog', 'horse',
                          'motorbike', 'person', 'pottedplant',
                          'sheep', 'sofa', 'train', 'tvmonitor')
+        '''
+        4106
+        There are 21 strings in the tuple. We are doing 20 classification.
+        However, we use not only 20 frontground, but also 1 background.
+        Therefore, there are 20+1=21 in this _classes tuple.
+        '''
         self._class_to_ind = dict(list(zip(self.classes, list(range(self.num_classes)))))
+        #4106 change _classes to a dict with index and string 
+        #{'__background__':0, 'aeroplane':1, ...} 
         self._image_ext = '.jpg'
         self._image_index = self._load_image_set_index()
         # Default to roidb handler
@@ -50,6 +63,7 @@ class pascal_voc(imdb):
                        'use_diff': False,
                        'matlab_eval': False,
                        'rpn_file': None}
+        #4106 not using any of these config for the project 
 
         assert os.path.exists(self._devkit_path), \
             'VOCdevkit path does not exist: {}'.format(self._devkit_path)
@@ -80,10 +94,12 @@ class pascal_voc(imdb):
         # self._devkit_path + /VOCdevkit2007/VOC2007/ImageSets/Main/val.txt
         image_set_file = os.path.join(self._data_path, 'ImageSets', 'Main',
                                       self._image_set + '.txt')
+        #4106 only use trainval
         assert os.path.exists(image_set_file), \
             'Path does not exist: {}'.format(image_set_file)
         with open(image_set_file) as f:
             image_index = [x.strip() for x in f.readlines()]
+            #4106 read all files and extensions to load data
         return image_index
 
     def _get_default_path(self):
@@ -98,8 +114,12 @@ class pascal_voc(imdb):
 
         This function loads/saves from/to a cache file to speed up future calls.
         """
+        # 4106
+        # when playing around with parameters or modify the model, the training data didn't change
+        # Therefore, after the first time of running this method, it stores the ground-truth regions of interest in a .pkl file
         cache_file = os.path.join(self.cache_path, self.name + '_gt_roidb.pkl')
-        if os.path.exists(cache_file):
+        if os.path.exists(cache_file): 
+        #4106 if such .pkl file exist, load. if not, compute and then store.
             with open(cache_file, 'rb') as fid:
                 try:
                     roidb = pickle.load(fid)
@@ -110,6 +130,10 @@ class pascal_voc(imdb):
 
         gt_roidb = [self._load_pascal_annotation(index)
                     for index in self.image_index]
+                    #4106 load annotation for each image and return it to the gt_roidb list 
+                    #4106 iteration for all image(5011 for voc2007)
+                    #4106 at this point, finish read all annotations.
+                    #4106 Write in to pickle and avoid to run again. 
         with open(cache_file, 'wb') as fid:
             pickle.dump(gt_roidb, fid, pickle.HIGHEST_PROTOCOL)
         print('wrote gt roidb to {}'.format(cache_file))
@@ -141,6 +165,7 @@ class pascal_voc(imdb):
         format.
         """
         filename = os.path.join(self._data_path, 'Annotations', index + '.xml')
+        #4106 use package xml.etree.ElementTree to read xml files
         tree = ET.parse(filename)
         objs = tree.findall('object')
         if not self.config['use_diff']:
@@ -152,15 +177,19 @@ class pascal_voc(imdb):
             #         len(objs) - len(non_diff_objs))
             objs = non_diff_objs
         num_objs = len(objs)
-
+        #4106 num_objs give how many objects in the image
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
+        #4106 a matrix with all zeros.
+        #4106 size: number of objects rows, and columns(x1,y1,x2,y2)
         gt_classes = np.zeros((num_objs), dtype=np.int32)
+        #4106 1 dimision, each object has only one type
         overlaps = np.zeros((num_objs, self.num_classes), dtype=np.float32)
         # "Seg" area for pascal is just the box area
         seg_areas = np.zeros((num_objs), dtype=np.float32)
-
+        #4106 for each object(21), what's the score for each object.(0 for all at the begining)
         # Load object bounding boxes into a data frame.
         for ix, obj in enumerate(objs):
+            #4106 for each object in the image
             bbox = obj.find('bndbox')
             # Make pixel indexes 0-based
             x1 = float(bbox.find('xmin').text) - 1
@@ -168,10 +197,15 @@ class pascal_voc(imdb):
             x2 = float(bbox.find('xmax').text) - 1
             y2 = float(bbox.find('ymax').text) - 1
             cls = self._class_to_ind[obj.find('name').text.lower().strip()]
+            #4106 cls is the index of the object
+
             boxes[ix, :] = [x1, y1, x2, y2]
             gt_classes[ix] = cls
-            overlaps[ix, cls] = 1.0
+            #4106 set box position and class to the object
+            overlaps[ix, cls] = 1.0 
+            #4106 it mush overlaps with it self, therefore, set its object index to 1
             seg_areas[ix] = (x2 - x1 + 1) * (y2 - y1 + 1)
+            #4106 find areas
 
         overlaps = scipy.sparse.csr_matrix(overlaps)
 

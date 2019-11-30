@@ -40,12 +40,14 @@ def combined_roidb(imdb_names):
     def get_roidb(imdb_name):
         imdb = get_imdb(imdb_name)
         print('Loaded dataset `{:s}` for training'.format(imdb.name))
-        imdb.set_proposal_method("gt")
+        imdb.set_proposal_method("gt") #4106 ground truth to load data
         print('Set proposal method: {:s}'.format("gt"))
-        roidb = get_training_roidb(imdb)
+        roidb = get_training_roidb(imdb) #4106 get data and append flipped images
         return roidb
 
     roidbs = [get_roidb(s) for s in imdb_names.split('+')]
+    #4106 We can use more than one training set and use '+' to join them toghther.
+    #4106 In our first try, we use voc2007 and would try use more latter.
     roidb = roidbs[0]
     if len(roidbs) > 1:
         for r in roidbs[1:]:
@@ -61,28 +63,40 @@ class Train:
     def __init__(self):
 
         # Create network
-        if cfg.FLAGS.network == 'vgg16':
+        if cfg.FLAGS.network == 'vgg16': # use vgg16 network
             self.net = vgg16(batch_size=cfg.FLAGS.ims_per_batch)
+            #4106 Use the consutor of class vgg16 and set all necessary variables.
         else:
             raise NotImplementedError
 
-        self.imdb, self.roidb = combined_roidb("voc_2007_trainval")
+        self.imdb, self.roidb = combined_roidb("voc_2007_trainval") 
+        #4106 Through the function call of combined_roidb, we get the training set and load it.
+        #4106 voc_2007_trainval is the training set we first implement. 
+        #4106 We can use more traning set to train the model at the same time latter.
 
         self.data_layer = RoIDataLayer(self.roidb, self.imdb.num_classes)
+        #4106 the RoIDataLayer read the data and shuffle, then return
         self.output_dir = cfg.get_output_dir(self.imdb, 'default')
+        #4106 the dir of checkpoint of the model
 
 
     def train(self):
 
         # Create session
         tfconfig = tf.ConfigProto(allow_soft_placement=True)
-        tfconfig.gpu_options.allow_growth = True
+        tfconfig.gpu_options.allow_growth = True 
+        #4106 alow gpu grow as need
         sess = tf.Session(config=tfconfig)
- 
+        #4106 create a session
+
         with sess.graph.as_default():
 
             tf.set_random_seed(cfg.FLAGS.rng_seed)
+
+
             layers = self.net.create_architecture(sess, "TRAIN", self.imdb.num_classes, tag='default')
+            #4106 Create a network architecture
+
             loss = layers['total_loss']
             lr = tf.Variable(cfg.FLAGS.learning_rate, trainable=False)
             momentum = cfg.FLAGS.momentum
@@ -117,6 +131,7 @@ class Train:
         print('Loading initial model weights from {:s}'.format(cfg.FLAGS.pretrained_model))
         variables = tf.global_variables()
         # Initialize all variables first
+        #4106 load vgg16
         sess.run(tf.variables_initializer(variables, name='init'))
         var_keep_dic = self.get_variables_in_checkpoint_file(cfg.FLAGS.pretrained_model)
         # Get the variables to restore, ignorizing the variables to fix
@@ -136,6 +151,8 @@ class Train:
         timer = Timer()
         iter = last_snapshot_iter + 1
         last_summary_time = time.time()
+
+        #4106 main loop
         while iter < cfg.FLAGS.max_iters + 1:
             # Learning rate
             if iter == cfg.FLAGS.step_size + 1:
@@ -148,7 +165,14 @@ class Train:
             blobs = self.data_layer.forward()
 
             # Compute the graph without summary
-            rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss = self.net.train_step(sess, blobs, train_op)
+            try:
+                #4106 Train setp(1 iteration)
+                rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss = self.net.train_step(sess, blobs, train_op)
+            except Exception:
+                # if some errors were encountered image is skipped without increasing iterations
+                print('image invalid, skipping')
+                continue
+
             timer.toc()
             iter += 1
 

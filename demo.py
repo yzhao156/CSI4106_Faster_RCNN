@@ -7,7 +7,6 @@
 # --------------------------------------------------------
 
 """
-
 Demo script showing detections in sample images.
 
 See README.md for installation instructions before running.
@@ -106,7 +105,7 @@ def parse_args():
     """Parse input arguments."""
     parser = argparse.ArgumentParser(description='Tensorflow Faster R-CNN demo')
     parser.add_argument('--net', dest='demo_net', help='Network to use [vgg16 res101]',
-                        choices=NETS.keys(), default='vgg16')
+                        choices=NETS.keys(), default='res101')
     parser.add_argument('--dataset', dest='dataset', help='Trained dataset [pascal_voc pascal_voc_0712]',
                         choices=DATASETS.keys(), default='pascal_voc_0712')
     args = parser.parse_args()
@@ -120,14 +119,12 @@ if __name__ == '__main__':
     # model path
     demonet = args.demo_net
     dataset = args.dataset
-    #tfmodel = os.path.join('output', demonet, DATASETS[dataset][0], 'default', NETS[demonet][0])
-    tfmodel = './default/voc_2007_trainval/default/vgg16_faster_rcnn_iter_40000.ckpt'
-    """
-    if not os.path.isfile(tfmodel):
+    tfmodel = os.path.join('output', demonet, DATASETS[dataset][0], 'default', NETS[demonet][0])
+
+    if not os.path.isfile(tfmodel + '.meta'):
         print(tfmodel)
         raise IOError(('{:s} not found.\nDid you download the proper networks from '
-                       'our server and place them properly?').format(tfmodel + '.meta')
-    """
+                       'our server and place them properly?').format(tfmodel + '.meta'))
 
     # set config
     tfconfig = tf.ConfigProto(allow_soft_placement=True)
@@ -142,7 +139,10 @@ if __name__ == '__main__':
         # net = resnetv1(batch_size=1, num_layers=101)
     else:
         raise NotImplementedError
-    net.create_architecture(sess, "TEST", 21,
+
+    n_classes = len(CLASSES)
+    # create the structure of the net having a certain shape (which depends on the number of classes) 
+    net.create_architecture(sess, "TEST", n_classes,
                             tag='default', anchor_scales=[8, 16, 32])
     saver = tf.train.Saver()
     saver.restore(sess, tfmodel)

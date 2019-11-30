@@ -21,6 +21,7 @@ def proposal_layer(rpn_cls_prob, rpn_bbox_pred, im_info, cfg_key, _feat_stride, 
         cfg_key = cfg_key.decode('utf-8')
 
     if cfg_key == "TRAIN":
+        #4106 standard of NMS
         pre_nms_topN = cfg.FLAGS.rpn_train_pre_nms_top_n
         post_nms_topN = cfg.FLAGS.rpn_train_post_nms_top_n
         nms_thresh = cfg.FLAGS.rpn_train_nms_thresh
@@ -31,13 +32,18 @@ def proposal_layer(rpn_cls_prob, rpn_bbox_pred, im_info, cfg_key, _feat_stride, 
 
     im_info = im_info[0]
     # Get the scores and bounding boxes
+    #4106 scores is the probility of it's an object(From RPN Layer)
+    #4106 rpn_bbox_pred is the position of boxes(From RPN Layer)
     scores = rpn_cls_prob[:, :, :, num_anchors:]
     rpn_bbox_pred = rpn_bbox_pred.reshape((-1, 4))
+
     scores = scores.reshape((-1, 1))
     proposals = bbox_transform_inv(anchors, rpn_bbox_pred)
+    #4106 clip_boxes to check if the box is out of the image.
     proposals = clip_boxes(proposals, im_info[:2])
 
     # Pick the top region proposals
+    #4106 reduce bbox from 2000 to 128(sort based on the probility of it's an object, and only take the highest 128 bbox)
     order = scores.ravel().argsort()[::-1]
     if pre_nms_topN > 0:
         order = order[:pre_nms_topN]
@@ -47,7 +53,7 @@ def proposal_layer(rpn_cls_prob, rpn_bbox_pred, im_info, cfg_key, _feat_stride, 
     # Non-maximal suppression
     keep = nms(np.hstack((proposals, scores)), nms_thresh)
 
-    # Pick th top region proposals after NMS
+    #4106 Pick th top region proposals after NMS
     if post_nms_topN > 0:
         keep = keep[:post_nms_topN]
     proposals = proposals[keep, :]
