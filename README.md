@@ -1,5 +1,4 @@
-# CSI4106_Faster_RCNN
-## Faster_RCNN With Comment
+# Faster_RCNN With Comment
 </br>
 
 ### Video:
