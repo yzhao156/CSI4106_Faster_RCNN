@@ -22,3 +22,13 @@ _All comments starts with_ __'#4106'__
 ### Config(parameters):
 
 + CSI4106_Faster_RCNN/lib/config/config.py </br>
+
+### core:
+
++ CSI4106_Faster_RCNN/lib/nets/network.py has 4 losses
+  + loss1: RPN's binary classification (it's an object or background)</br>
+  + loss2: RPN's loss of regression (bbox)</br>
+  + loss3: fully connected network's softmax (20 classification)</br>
+  + loss4: fully connected network's regression (bbox)</br>
+
+  
