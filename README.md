@@ -44,12 +44,12 @@ _All comments starts with_ __'#4106'__
 ------
 
 + CSI4106_Faster_RCNN/lib/nets/vgg16.py Build 4 networks
-  + build_head: First net</br>
+  + __`build_head`: First net__</br>
      + 3x3 convolution layers would not change the size of feature map in vgg16</br>
      + 2x2 pooling change the size from 2x2 to 1x1, therefore, the number of pooling laber determine the size</br>
      + 5 conv2d layers and 4 pooling layers (0.5*0.5*0.5*0.5 = 1/16)</br>
      + It's not fully connected, therefore, the input of the model does not have  to resize to the same size since CNN can get any size of image 
-  + build_rpn: Second net</br>
+  + __`build_rpn`: Second net__</br>
      + Input is the feature maps from vgg16</br>
      + In general, habe 3x3 convolution and get 256 feature maps, at this moment, there isn't any bound box.</br>
      + For each point in the feature map, there is an anchor which correspond a region of original input(16x larger(4 pooling layers  1/0.5^4 = 16))</br>
@@ -64,7 +64,7 @@ _All comments starts with_ __'#4106'__
      + For each box, there are x1,y1,x2,y2. We regression on these points to adjust the size,shape,position of boxes.</br>
      + Since there are k(9) anchor boxes for each point, we have 4(x1,y1,x2,y2)*k coordinates</br>
   
-  + build_proposals: Third net</br>
+  + __`build_proposals`: Third net__</br>
      &nbsp; &nbsp; &nbsp; &nbsp; IOU = Intersation of Unit;
      NMS = Non-maximum suppression;
      bbox = boundary box
@@ -84,7 +84,7 @@ _All comments starts with_ __'#4106'__
             3. MAX
                 If the boundary box is out of the image, ignore the bbox.
       + As a result, we reduce bbox from 2000 to 128(sort based on the probility of it's an object, and only take the highest 128 bbox)        
-  + build_predictions: Fourth net</br>
+  + __`build_predictions`: Fourth net__</br>
       &nbsp; &nbsp; &nbsp; &nbsp; Here is a network that's fully connected net and fc6, fc7 with size of 4096.</br>
       &nbsp; &nbsp; &nbsp; &nbsp; Use scores and predictions to do classfications and bbox regression.
 
