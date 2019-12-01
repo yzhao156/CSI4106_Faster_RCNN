@@ -23,7 +23,7 @@ _All comments in the code starts with_ __'#4106'__
 
 + CSI4106_Faster_RCNN/lib/config/config.py </br>
 
-### core files:
+### Core Files:
 1. CSI4106_Faster_RCNN/train.py Is the main caller
   + train.train() </br>
     + get the training set and load it.
