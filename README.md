@@ -1,9 +1,9 @@
 # Faster_RCNN With Comment
 </br>
 
-_All comments starts with_ __'#4106'__
+_All comments in the code starts with_ __'#4106'__
 
-### Video:
+### Video:(TO DELETE)
 
 + 0:32:51 怎么加载数据</br>
 + 1:14:40 网络结构 RPN 9 anchnors | 1x1 cnn 18 classification | 1x1 cnn 36 regression</br>
@@ -23,8 +23,8 @@ _All comments starts with_ __'#4106'__
 
 + CSI4106_Faster_RCNN/lib/config/config.py </br>
 
-### core:
-+ CSI4106_Faster_RCNN/train.py Is the main caller
+### core files:
+1. CSI4106_Faster_RCNN/train.py Is the main caller
   + train.train() </br>
     + get the training set and load it.
   + train = Train() </br>
@@ -35,7 +35,7 @@ _All comments starts with_ __'#4106'__
                     ` rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss = self.net.train_step(sess, blobs, train_op) `
   
 ------
-+ CSI4106_Faster_RCNN/lib/nets/network.py has 4 losses
+2. CSI4106_Faster_RCNN/lib/nets/network.py has 4 losses
   + loss1: RPN's binary classification (it's an object or background)</br>
   + loss2: RPN's loss of regression (bbox)</br>
   + loss3: fully connected network's softmax (20 classification)</br>
@@ -43,7 +43,7 @@ _All comments starts with_ __'#4106'__
 
 ------
 
-+ CSI4106_Faster_RCNN/lib/nets/vgg16.py Build 4 networks
+3. CSI4106_Faster_RCNN/lib/nets/vgg16.py Build 4 networks
   + __`build_head`: First net__</br>
      + 3x3 convolution layers would not change the size of feature map in vgg16</br>
      + 2x2 pooling change the size from 2x2 to 1x1, therefore, the number of pooling laber determine the size</br>
