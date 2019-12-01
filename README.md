@@ -50,7 +50,26 @@ _All comments starts with_ __'#4106'__
      + Regression Layer(4*9=36 1x1 conv)</br>
      + For each box, there are x1,y1,x2,y2. We regression on these points to adjust the size,shape,position of boxes.</br>
      + Since there are k(9) anchor boxes for each point, we have 4(x1,y1,x2,y2)*k coordinates</br>
-  + build_proposals
+  + build_proposals: Third net</br>
+     + IOU = Intersation of Unit
+     + NMS = Non-maximum suppression
+     + bbox = boundary box
+     + Background:
+     + Input is the boxes that generated in RPN and feature map generated in vgg16.
+     + At this moment, we map all boxes to original image.
+     + Therefore, we can calculate IOU.
+     + When IOU > a standard(0.7), it is an object.
+     + Each bbox has a probility for an object, for each anchnor, we have 9 bbox with 9 probility(of objectiveness) in RPN layer.
+     + Reduce bbox:
+     + If we have 2000 boxes, it's a lot. We reduce the number of boxes and only keep boxes that are valuable.
+        1. IOU
+            If IOU<0.7, we don't do regression. Stop.
+        2. NMS
+            If it's an object(>=0.7), IOU is large. There are many boxes around the same object. 
+            Use NMS to keep only the boxes with high probility of it's an object.
+        3. MAX
+            If the boundary box is out of the image, ignore the bbox.
+      + As a result, we reduce bbox from 2000 to 128(sort based on the probility of it's an object, and only take the highest 128 bbox)        
   + build_predictions
 
 
