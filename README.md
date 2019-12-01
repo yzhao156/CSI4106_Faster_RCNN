@@ -37,20 +37,19 @@ _All comments starts with_ __'#4106'__
      + 5 conv2d layers and 4 pooling layers (0.5*0.5*0.5*0.5 = 1/16)</br>
      + It's not fully connected, therefore, the input of the model does not have  to resize to the same size since CNN can get any size of image 
   + build_rpn: Second net</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; Input is the feature maps from vgg16</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; In general, habe 3x3 convolution and get 256 feature maps, at this moment, there isn't any bound box.</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; For each point in the feature map, there is an anchor which correspond a region of original input(16x larger(4 pooling layers  1/0.5^4 = 16))</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; Therefore, for each point(anchor) on the feature map, correspoind 16 times of orginal image and find k anchor boxes.</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; For a 3x3 region on conv feature map, we can find size of 1x1,2x1,1x2.(3 types) and 3 base size. Therefore, k is 3x3=9. (9 anchor boxes for a point in a conv feature map)</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; In the paper, the writer says an 600*1000 image through conv layers and pooling layers can get 256 feature map with size about 40*60. </br>
-     </br>
-     &nbsp; &nbsp; &nbsp; &nbsp; In this way, we get a lot of boxes(about 2000 from the paper) for each feature map. We can use classification and regression to the boxes latter.</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; Classification Layer(2*9=18 1x1 conv)</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; For k(9) anchor boxes, do binary classfication(frontground or background)</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; A conv layer with 1x1 and get 2k scores.</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; Regression Layer(4*9=36 1x1 conv)</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; For each box, there are x1,y1,x2,y2. We regression on these points to adjust the size,shape,position of boxes.</br>
-     &nbsp; &nbsp; &nbsp; &nbsp; Since there are k(9) anchor boxes for each point, we have 4(x1,y1,x2,y2)*k coordinates</br>
+     + Input is the feature maps from vgg16</br>
+     + In general, habe 3x3 convolution and get 256 feature maps, at this moment, there isn't any bound box.</br>
+     + For each point in the feature map, there is an anchor which correspond a region of original input(16x larger(4 pooling layers  1/0.5^4 = 16))</br>
+     + Therefore, for each point(anchor) on the feature map, correspoind 16 times of orginal image and find k anchor boxes.</br>
+     + For a 3x3 region on conv feature map, we can find size of 1x1,2x1,1x2.(3 types) and 3 base size. Therefore, k is 3x3=9. (9 anchor boxes for a point in a conv feature map)</br>
+     + In the paper, the writer says an 600*1000 image through conv layers and pooling layers can get 256 feature map with size about 40*60. </br>
+     + In this way, we get a lot of boxes(about 2000 from the paper) for each feature map. We can use classification and regression to the boxes latter.</br>
+     + Classification Layer(2*9=18 1x1 conv)</br>
+     + For k(9) anchor boxes, do binary classfication(frontground or background)</br>
+     + A conv layer with 1x1 and get 2k scores.</br>
+     + Regression Layer(4*9=36 1x1 conv)</br>
+     + For each box, there are x1,y1,x2,y2. We regression on these points to adjust the size,shape,position of boxes.</br>
+     + Since there are k(9) anchor boxes for each point, we have 4(x1,y1,x2,y2)*k coordinates</br>
   
   + build_proposals: Third net</br>
      &nbsp; &nbsp; &nbsp; &nbsp; IOU = Intersation of Unit;
