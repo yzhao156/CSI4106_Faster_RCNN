@@ -61,7 +61,7 @@ _All comments starts with_ __'#4106'__
        + When IOU > a standard(0.7), it is an object.
        + Each bbox has a probility for an object, for each anchnor, we have 9 bbox with 9 probility(of objectiveness) in RPN layer.
      + Reduce bbox:
-        + If we have 2000 boxes, it's a lot. We reduce the number of boxes and only keep boxes that are valuable.
+        + If we have 2000 boxes, it's a lot. We reduce the number of boxes and only keep boxes that are valuable. There are three methods to reduce the boxes
             1. IOU
                 If IOU<0.7, we don't do regression. Stop.
             2. NMS
