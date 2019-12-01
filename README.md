@@ -70,8 +70,8 @@ _All comments starts with_ __'#4106'__
             3. MAX
                 If the boundary box is out of the image, ignore the bbox.
       + As a result, we reduce bbox from 2000 to 128(sort based on the probility of it's an object, and only take the highest 128 bbox)        
-  + build_predictions</br>
-      Here is a network that's fully connected net and fc6, fc7 with size of 4096.</br>
+  + build_predictions: Fourth net</br>
+      &nbsp Here is a network that's fully connected net and fc6, fc7 with size of 4096.</br>
       Use scores and predictions to do classfications and bbox regression.
 
 
