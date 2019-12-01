@@ -5,10 +5,10 @@ _All comments in the code starts with_ __'#4106'__
 
 ### 视频:(TO DELETE)
 
-+ 三十二分五十一秒 怎么加载数据</br>
-+ 一小时十四分四十秒 网络结构 RPN 9 anchnors | 1x1 cnn 18 classification | 1x1 cnn 36 regression</br>
-+ 一小时四十四分五十四秒 网络结构 Proposal</br>
-+ 两小时十八分 结束</br>
++ 三十二分五十一秒 -> 怎么加载数据</br>
++ 一小时十四分四十秒 -> 网络结构 RPN 9 anchnors | 1x1 cnn 18 classification | 1x1 cnn 36 regression</br>
++ 一小时四十四分五十四秒 -> 网络结构 Proposal</br>
++ 两小时十八分 ->结束</br>
 
 ### Modify(Ordered in comments):
 
