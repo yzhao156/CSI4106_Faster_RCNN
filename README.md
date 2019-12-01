@@ -34,7 +34,7 @@ _All comments starts with_ __'#4106'__
     + Loop train step
                     ` rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss = self.net.train_step(sess, blobs, train_op) `
   
-
+------
 + CSI4106_Faster_RCNN/lib/nets/network.py has 4 losses
   + loss1: RPN's binary classification (it's an object or background)</br>
   + loss2: RPN's loss of regression (bbox)</br>
