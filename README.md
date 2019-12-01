@@ -24,6 +24,16 @@ _All comments starts with_ __'#4106'__
 + CSI4106_Faster_RCNN/lib/config/config.py </br>
 
 ### core:
++ CSI4106_Faster_RCNN/train.py Is the main caller
+  + train.train() </br>
+    + get the training set and load it.
+  + train = Train() </br>
+    + create a session
+    + Create a network architecture
+    + Load weights
+    + Loop train step
+                    ` rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss = self.net.train_step(sess, blobs, train_op) `
+  
 
 + CSI4106_Faster_RCNN/lib/nets/network.py has 4 losses
   + loss1: RPN's binary classification (it's an object or background)</br>
