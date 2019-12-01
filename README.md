@@ -40,6 +40,9 @@ _All comments starts with_ __'#4106'__
   + loss2: RPN's loss of regression (bbox)</br>
   + loss3: fully connected network's softmax (20 classification)</br>
   + loss4: fully connected network's regression (bbox)</br>
+
+------
+
 + CSI4106_Faster_RCNN/lib/nets/vgg16.py Build 4 networks
   + build_head: First net</br>
      + 3x3 convolution layers would not change the size of feature map in vgg16</br>
