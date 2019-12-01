@@ -32,10 +32,10 @@ _All comments starts with_ __'#4106'__
   + loss4: fully connected network's regression (bbox)</br>
 + CSI4106_Faster_RCNN/lib/nets/vgg16.py Build networks
   + build_head: First net</br>
-     3x3 convolution layers would not change the size of feature map in vgg16</br>
-     2x2 pooling change the size from 2x2 to 1x1, therefore, the number of pooling laber determine the size</br>
-     5 conv2d layers and 4 pooling layers (0.5*0.5*0.5*0.5 = 1/16)</br>
-     it's not fully connected, therefore, the input of the model does not have  to resize to the same size since CNN can get any size of image 
+     + 3x3 convolution layers would not change the size of feature map in vgg16</br>
+     + 2x2 pooling change the size from 2x2 to 1x1, therefore, the number of pooling laber determine the size</br>
+     + 5 conv2d layers and 4 pooling layers (0.5*0.5*0.5*0.5 = 1/16)</br>
+     + It's not fully connected, therefore, the input of the model does not have  to resize to the same size since CNN can get any size of image 
   + build_rpn: Second net</br>
         Input is the feature maps from vgg16</br>
         In general, habe 3x3 convolution and get 256 feature maps, at this moment, there isn't any bound box.</br>
