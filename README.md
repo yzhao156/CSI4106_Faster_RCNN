@@ -5,7 +5,7 @@ _All comments in the code starts with_ __'#4106'__</br>
 Packages are used: numpy, PIL, scipy, xml.etree.ElementTree , uuid, subprocess, pickle, and tensorflow.</br>
 Mathine to train: 3 x NVIDIA Tesla V100 from Google Cloud Platform(GCP)
 
-### Modify(Ordered in comments):
+### Comments(Ordered in the lines of comments):
 
 1. CSI4106_Faster_RCNN/lib/nets/vgg16.py</br>
 2. CSI4106_Faster_RCNN//train.py</br>
