@@ -2,6 +2,7 @@
 </br>
 
 _All comments in the code starts with_ __'#4106'__
+numpy, PIL, scipy, xml.etree.ElementTree , uuid, subprocess, pickle, and tensorflow.
 
 
 ### Modify(Ordered in comments):
