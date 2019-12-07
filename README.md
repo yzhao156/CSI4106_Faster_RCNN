@@ -2,7 +2,8 @@
 </br>
 
 _All comments in the code starts with_ __'#4106'__</br>
-Packages are used: numpy, PIL, scipy, xml.etree.ElementTree , uuid, subprocess, pickle, and tensorflow.
+Packages are used: numpy, PIL, scipy, xml.etree.ElementTree , uuid, subprocess, pickle, and tensorflow.</br>
+Mathine to train: 3 x NVIDIA Tesla V100 from Google Cloud Platform(GCP)
 
 
 ### Modify(Ordered in comments):
