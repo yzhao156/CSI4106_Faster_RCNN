@@ -5,6 +5,13 @@ _All comments in the code starts with_ __'#4106'__</br>
 Packages are used: numpy, PIL, scipy, xml.etree.ElementTree , uuid, subprocess, pickle, and tensorflow.</br>
 Mathine to train: 3 x NVIDIA Tesla V100 from Google Cloud Platform(GCP)
 
+1. I change the config.py, from learning_rate of 0.001 to 0.0005, with max_iters from 40000 to 150000.</br>
+
+2. I have changed the net from vgg16 to vgg19. VGG16 has 16 layers and VGG19 has 19 layers(3 more conv layers.) </br>
+
+3. To fit the model, I have download the part of code of VGG 19 from</br> https://github.com/tensorflow/models/blob/master/research/slim/nets/vgg.py, these changes are commented in the code. </br>
+
+4. I also tried to change the net to ResNetV1-152 by download the checkpoint of ResNetV1-152, modify the configuration file, and change the structure of block to fit the network. Some code are referenced to</br>https://github.com/tensorflow/models/blob/master/research/slim/nets/resnet_v1.py.
 
 ### Modify(Ordered in comments):
 
