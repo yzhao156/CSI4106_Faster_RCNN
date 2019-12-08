@@ -22,7 +22,7 @@ from tensorflow.python.ops import nn_ops
 from tensorflow.contrib.layers.python.layers import initializers
 from tensorflow.contrib.layers.python.layers import layers
 from lib.config import config as cfg
-
+#4106 Pass in some parameters, such as batch_norm_decay passed into decay.
 def resnet_arg_scope(is_training=True,
                      weight_decay=cfg.TRAIN.WEIGHT_DECAY,
                      batch_norm_decay=0.997,
@@ -49,13 +49,13 @@ def resnet_arg_scope(is_training=True,
       normalizer_params=batch_norm_params):
     with arg_scope([layers.batch_norm], **batch_norm_params) as arg_sc:
       return arg_sc
-
+#4106 resnetv1 () is a subclass of Network. Some of the methods of the parent class cannot meet the needs, and the method is overridden in the child class.
 class resnetv1(Network):
   def __init__(self, batch_size=1, num_layers=50):
     Network.__init__(self, batch_size=batch_size)
     self._num_layers = num_layers
     self._resnet_scope = 'resnet_v1_%d' % num_layers
-
+#4106 Roi processing steps, the feature area corresponding to crop, Pooling to 7x7
   def _crop_pool_layer(self, bottom, rois, name):
     with tf.variable_scope(name) as scope:
       batch_ids = tf.squeeze(tf.slice(rois, [0, 0], [-1, 1], name="batch_id"), [1])
@@ -81,10 +81,14 @@ class resnetv1(Network):
 
   # Do the first few layers manually, because 'SAME' padding can behave inconsistently
   # for images of different sizes: sometimes 0, sometimes 1
+  #4106 #For images of different sizes, the padding in the same mode may generate different calculation results. In order to maintain consistency, manually define the network head.
   def build_base(self):
     with tf.variable_scope(self._resnet_scope, self._resnet_scope):
+      #4106 First create a convolution layer, 64 convolution sums, 7x7, step size is 2
       net = resnet_utils.conv2d_same(self._image, 64, 7, stride=2, scope='conv1')
+      #4106 Pad the input image after convolution, using the tf.pad function.
       net = tf.pad(net, [[0, 0], [1, 1], [1, 1], [0, 0]])
+      #4106 Further maximum pooling, with a step size of 2 and a size of 3x3
       net = slim.max_pool2d(net, [3, 3], stride=2, padding='VALID', scope='pool1')
 
     return net
@@ -111,6 +115,9 @@ class resnetv1(Network):
         resnet_utils.Block('block4', bottleneck, [(2048, 512, 1)] * 3)
       ]
     elif self._num_layers == 101:
+      #4106 Example: the first block name: 'block1' 64 convolution kernels 
+      #This layer structure is copied 3 times The convolution step is 2
+      #Same for 50 and 152(200)
       blocks = [
         resnet_utils.Block('block1', bottleneck,
                            [(256, 64, 1)] * 2 + [(256, 64, 2)]),
@@ -253,13 +260,17 @@ class resnetv1(Network):
     return variables_to_restore
 
   def fix_variables(self, sess, pretrained_model):
+    #4106 Correct the variables before training to convert rgb to bgr. First reply from the model, then perform channel inversion
     print('Fix Resnet V1 layers..')
     with tf.variable_scope('Fix_Resnet_V1') as scope:
       with tf.device("/cpu:0"):
         # fix RGB to BGR
+        #4106 Use tf.get_variable to call a variable, create a variable without it, name "conv1_rgb", size 7x7x3x64, size 7x7, three channels, 64 convolution kernels. 
+        # It is the conversion from the three channels of rgb to bgr. Because it is a conversion, it cannot be trained.
         conv1_rgb = tf.get_variable("conv1_rgb", [7, 7, 3, 64], trainable=False)
         restorer_fc = tf.train.Saver({self._resnet_scope + "/conv1/weights": conv1_rgb})
         restorer_fc.restore(sess, pretrained_model)
-
+        #4106 tf.reverse is the reverse, and the following [2] is the specified reverse dimension. 
+        # Here, the channel reverse is specified, and rgb becomes bgr, because cv2 read is bgr.
         sess.run(tf.assign(self._variables_to_fix[self._resnet_scope + '/conv1/weights:0'],
                            tf.reverse(conv1_rgb, [2])))
