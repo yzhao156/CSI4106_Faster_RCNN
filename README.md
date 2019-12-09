@@ -1,7 +1,8 @@
 # CSI4106 project (type 3): </br>Object Detection using Faster R-CNN
 </br>
-### Group number 21
-Group members:</br>
+
+## Group number 21
+### Group members:</br>
 <pre>
 Student Name        Student Number        Email <br>
 Wentao Yang         8957505               wyang010@uottawa.ca <br>
