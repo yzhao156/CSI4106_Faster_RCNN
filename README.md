@@ -1,9 +1,7 @@
 # CSI4106 project (type 3): </br>Object Detection using Faster R-CNN
 </br>
-
 <h3>Group #21</h3>
-
-</br></br>
+</br>
 
 ## This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
 1. We put all of the code we have commented for understanding the code in "Comments" folder.</br></br>
