@@ -2,14 +2,7 @@
 </br>
 
 ## Group number 21
-<b>Group members:</b></br>
-<pre>
-Student Name        Student Number        Email <br>
-Wentao Yang         8957505               wyang010@uottawa.ca <br>
-Yi Zhao             8650881               yzhao156@uottawa.ca <br>
-Junbo Tang          8639271               btang076@uottawa.ca <br>
-</pre>
-
+</br></br>
 
 ## This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
 1. We put all of the code we have commented for understanding the code in "Comments" folder.</br></br>
