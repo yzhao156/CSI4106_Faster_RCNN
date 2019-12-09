@@ -1,11 +1,14 @@
 # CSI4106 project (type 3): </br>Object Detection using Faster R-CNN
-===========================
+</br>
 ### Group #21
 Group members:</br>
-Wentao Yang&emsp		8957505&emsp		wyang010@uottawa.ca</br>
-Yi Zhao&emsp				8650881&emsp		yzhao156@uottawa.ca</br>
-Junbo Tang&emsp		8639271&emsp		btang076@uottawa.ca</br>
-</br>
+<pre>
+Student Name        Student Number        Email <br>
+Wentao Yang         8957505               wyang010@uottawa.ca <br>
+Yi Zhao             8650881               yzhao156@uottawa.ca <br>
+Junbo Tang          8639271               btang076@uottawa.ca <br>
+</pre>
+
 
 ### This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
 1. We put all of the code we have commented for understanding the code in "Comments" folder.</br>
