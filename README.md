@@ -12,9 +12,9 @@ Junbo Tang          8639271               btang076@uottawa.ca <br>
 
 
 ## This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
-1. We put all of the code we have commented for understanding the code in "Comments" folder.</br>
-2. We put all of the files needed to be replaced for the Faster R-CNN implemetation in folder "all files needed to be replaced for the Faster R-CNN implemetation", the directory structure is just the same as the Faster R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the Faster R-CNN implemetation" is the root path of your implementation.</br>
-3. We put all of the files needed to be replaced for the Fast R-CNN (Baseline approach) implemetation in folder "all files needed to be replaced for the baseline approach", the directory structure is just the same as the Fast R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the baseline approach" is the root path of your implementation.</br>
+1. We put all of the code we have commented for understanding the code in "Comments" folder.</br></br>
+2. We put all of the files needed to be replaced for the Faster R-CNN implemetation in folder "all files needed to be replaced for the Faster R-CNN implemetation", the directory structure is just the same as the Faster R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the Faster R-CNN implemetation" is the root path of your implementation.</br></br>
+3. We put all of the files needed to be replaced for the Fast R-CNN (Baseline approach) implemetation in folder "all files needed to be replaced for the baseline approach", the directory structure is just the same as the Fast R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the baseline approach" is the root path of your implementation.</br></br>
 4. We also put the files we changed for some of our modified verisons in this repository, including "Wentao's attempt to change the optimizer" and "Yi's attempt to the ResNet and vgg19". Some modifications are so simple to implement (like just change the learning rate or the max number of epochs in the configuration file) that collecting all of them to here will make this repository a little bit messy.
 </br></br>
 
