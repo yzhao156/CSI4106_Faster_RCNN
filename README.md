@@ -2,7 +2,7 @@
 </br>
 
 ## Group number 21
-### Group members:</br>
+<b>Group members:<b/></br>
 <pre>
 Student Name        Student Number        Email <br>
 Wentao Yang         8957505               wyang010@uottawa.ca <br>
