@@ -1,10 +1,10 @@
-# CSI4106 project (type 3): Object Detection using Faster R-CNN
-
+# CSI4106 project (type 3): </br>Object Detection using Faster R-CNN
+===========================
 ### Group #21
 Group members:</br>
-Wentao Yang		8957505		wyang010@uottawa.ca</br>
-Yi Zhao				8650881		yzhao156@uottawa.ca</br>
-Junbo Tang		8639271		btang076@uottawa.ca</br>
+Wentao Yang&emsp		8957505&emsp		wyang010@uottawa.ca</br>
+Yi Zhao&emsp				8650881&emsp		yzhao156@uottawa.ca</br>
+Junbo Tang&emsp		8639271&emsp		btang076@uottawa.ca</br>
 </br>
 
 ### This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
@@ -12,7 +12,7 @@ Junbo Tang		8639271		btang076@uottawa.ca</br>
 2. We put all of the files needed to be replaced for the Faster R-CNN implemetation in folder "all files needed to be replaced for the Faster R-CNN implemetation", the directory structure is just the same as the Faster R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the Faster R-CNN implemetation" is the root path of your implementation.</br>
 3. We put all of the files needed to be replaced for the Fast R-CNN (Baseline approach) implemetation in folder "all files needed to be replaced for the baseline approach", the directory structure is just the same as the Fast R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the baseline approach" is the root path of your implementation.</br>
 4. We also put the files we changed for some of our modified verisons in this repository, including "Wentao's attempt to change the optimizer" and "Yi's attempt to the ResNet and vgg19". Some modifications are so simple to implement (like just change the learning rate or the max number of epochs in the configuration file) that collecting all of them to here will make this repository a little bit messy.
-</br>
+</br></br>
 
 ### Reference
 Faster R-CNN:
@@ -37,8 +37,8 @@ The VGG 16 pretrained model we used:
 http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz
 
 
-
-### Core Files:
+</br></br>
+### File descriptions for the training process
 1. CSI4106_Faster_RCNN/train.py Is the main caller
   + `train.train()` </br>
     + get the training set and load it.
@@ -46,7 +46,7 @@ http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz
     + create a session
     + Create a network architecture
     + Load weights
-    + Loop train step
+    + Loop training step
                     ` rpn_loss_cls, rpn_loss_box, loss_cls, loss_box, total_loss = self.net.train_step(sess, blobs, train_op) `
   
 ------
