@@ -1,6 +1,6 @@
 # CSI4106 project (type 3): </br>Object Detection using Faster R-CNN
 </br>
-### Group #21
+### Group number 21
 Group members:</br>
 <pre>
 Student Name        Student Number        Email <br>
@@ -10,7 +10,7 @@ Junbo Tang          8639271               btang076@uottawa.ca <br>
 </pre>
 
 
-### This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
+## This is the GitHub link for the Project Final Report, here is an explaination of the arrangement of files in this repository
 1. We put all of the code we have commented for understanding the code in "Comments" folder.</br>
 2. We put all of the files needed to be replaced for the Faster R-CNN implemetation in folder "all files needed to be replaced for the Faster R-CNN implemetation", the directory structure is just the same as the Faster R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the Faster R-CNN implemetation" is the root path of your implementation.</br>
 3. We put all of the files needed to be replaced for the Fast R-CNN (Baseline approach) implemetation in folder "all files needed to be replaced for the baseline approach", the directory structure is just the same as the Fast R-CNN implemetation contained in the following reference list, you can assume the folder "all files needed to be replaced for the baseline approach" is the root path of your implementation.</br>
